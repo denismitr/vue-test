@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>vue-test</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div id="app">
+        <nav class="nav">
+          <div class="container">
+
+              <logo></logo>
+
+              <div class="nav-center">
+                <a class="nav-item" href="#">
+                  <span class="icon">
+                    <i class="fa fa-github"></i>
+                  </span>
+                </a>
+                <a class="nav-item" href="#">
+                  <span class="icon">
+                    <i class="fa fa-twitter"></i>
+                  </span>
+                </a>
+              </div>
+
+              <span class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+
+              <div class="nav-right nav-menu">
+                <router-link class="nav-item" to="/">Главная</router-link>
+                <router-link class="nav-item" to="/users">Пользователи</router-link>
+                <router-link class="nav-item" to="/about">О программе</router-link>
+              </div>
+          </div>
+        </nav>
+
+        <router-view class="view hello"></router-view>
+        <router-view class="view about" name="about"></router-view>
+        <router-view class="view users" name="users"></router-view>
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

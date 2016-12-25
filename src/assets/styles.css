@@ -1,0 +1,16 @@
+body {
+    font-size: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+}
+
+section {
+    background-color: #F5F5F5 !important;
+}
+
+section > h1 {
+    margin-bottom: 2.5rem;
+}
