@@ -9,6 +9,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+Vue.prototype.$http = require('axios')
+
 require('./assets/styles.css')
 
 window.eventHub = new Vue({})

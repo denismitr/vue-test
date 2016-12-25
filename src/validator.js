@@ -14,10 +14,13 @@ export default {
 
     validateRequired (input) {
       if (typeof input === 'string' && input.length > 0) {
-        console.log('Input', input)
         return true
       }
-      console.log('Error', input)
+
+      if (_.isNumber(input) && input > 0) {
+        return true
+      }
+
       return false
     },
 
@@ -28,7 +31,7 @@ export default {
     },
 
     validateNumeric (input) {
-      const re = /^\d+$/i
+      const re = /^\d{1,3}$/i
 
       return this.validateRegex(input, re)
     },
@@ -60,7 +63,7 @@ export default {
     },
 
     _iterateForErrors (keyValue, rules, messages) {
-      let errors = {
+      var errors = {
         length: 0
       }
 
@@ -68,12 +71,10 @@ export default {
         let rulesList = ruleString.split('|')
         // console.log(rulesList)
         _.forEach(rulesList, (rule) => {
-          console.log('RULE', rule, 'FIELD', field)
           if (keyValue[field] !== undefined) {
             let func = 'validate' + rule.charAt(0).toUpperCase() + rule.slice(1)
 
             if (!this[func](keyValue[field])) {
-              console.error(messages[rule])
               errors[field] = messages[rule]
               errors.length += 1
             }

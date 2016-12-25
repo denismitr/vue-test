@@ -4,22 +4,22 @@
             <label class="label">Имя</label>
             <p class="control">
               <input ref="first" class="input" type="text" placeholder="Имя" v-model="user.name.first"/>
-              <span class="help is-danger">{{ errors['first'] }}</span>
+              <span v-if="errors && errors.length > 0" class="help is-danger">{{ errors['first'] }}</span>
             </p>
             <label class="label">Фамилия</label>
             <p class="control">
               <input ref="last" class="input" type="text" placeholder="Фамилия" v-model="user.name.last"/>
-              <span class="help is-danger">{{ errors['last'] }}</span>
+              <span v-if="errors && errors.length > 0" class="help is-danger">{{ errors['last'] }}</span>
             </p>
             <label class="label">Email</label>
             <p class="control">
               <input ref="email" class="input" type="text" placeholder="Email" v-model="user.email"/>
-              <span class="help is-danger">{{ errors['email'] }}</span>
+              <span v-if="errors && errors.length > 0" class="help is-danger">{{ errors['email'] }}</span>
             </p>
             <label class="label">Возраст</label>
             <p class="control">
               <input ref="age" class="input" type="text" placeholder="Возраст" v-model="user.age"/>
-              <span class="help is-danger">{{ errors['age'] }}</span>
+              <span v-if="errors && errors.length > 0" class="help is-danger">{{ errors['age'] }}</span>
             </p>
         </div>
     </div>
@@ -44,7 +44,9 @@
             email: ''
           },
 
-          errors: [],
+          errors: {
+            length: 0
+          },
 
           rules: {
             first: 'required|alpha',
@@ -64,27 +66,30 @@
 
       mixins: [validator],
 
-      props: ['userToEdit'],
+      props: ['userToEdit', 'action'],
 
       mounted () {
-        if (this.userToEdit) {
+        if (this.userToEdit && this.action === 'edit') {
           this.user = _.cloneDeep(this.userToEdit)
         }
 
-        if (this.user) {
-          eventHub.$on('save-user-action', this.saveUser)
-        }
+        eventHub.$on('save-user-action', this.saveUser)
+      },
+
+      beforeDestroy () {
+        eventHub.$off('save-user-action')
       },
 
       methods: {
         saveUser () {
-          this.errors = this.validateAll(this.user, this.rules, this.messages)
+          console.log('ECCESSIVE CALL')
+          if (this.user.guid) {
+            this.errors = this.validateAll(this.user, this.rules, this.messages)
 
-          if (this.errors.length > 0) {
-            return
+            if (this.errors === null || this.errors.length === 0) {
+              eventHub.$emit('save-user-data', this.user)
+            }
           }
-
-          eventHub.$emit('save-user-data', this.user)
         }
       }
     }

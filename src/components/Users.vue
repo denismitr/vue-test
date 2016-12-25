@@ -10,7 +10,7 @@
 
                 <div class="panel-block has-content">
                     <users-table v-if="view==='table'" :users="users"></users-table>
-                    <user-form v-else :userToEdit="userToEdit"></user-form>
+                    <user-form v-if="view==='form'" :userToEdit="userToEdit" :action="action"></user-form>
                 </div>
 
                 <div class="panel-block">
@@ -27,7 +27,7 @@
     import UserForm from './UserForm'
     import eventHub from './../EventHub'
     import _ from 'lodash'
-    import $ from 'jquery'
+    // import $ from 'jquery'
 
     export default {
       name: 'users',
@@ -47,8 +47,13 @@
       components: { UsersTable, Controls, UserForm },
 
       mounted () {
-        $.getJSON('/static/mates.json', (json) => {
-          this.users = json
+        // $.getJSON('/static/mates.json', (json) => {
+        //   this.users = json
+        // })
+        this.$http.get('/static/mates.json').then((response) => {
+          this.users = response.data
+        }, (error) => {
+          console.log(error)
         })
 
         eventHub.$on('delete-user', this.deleteUser)
@@ -56,6 +61,14 @@
         eventHub.$on('close-form', this.closeForm)
         eventHub.$on('save-user-data', this.saveUserData)
         eventHub.$on('edit-user', this.editUser)
+      },
+
+      beforeDestroy () {
+        eventHub.$off('delete-user')
+        eventHub.$off('open-create-form')
+        eventHub.$off('close-form')
+        eventHub.$off('save-user-data')
+        eventHub.$off('edit-user')
       },
 
       methods: {
@@ -66,7 +79,7 @@
         },
 
         editUser (user) {
-          if (user.guid) {
+          if (user.guid && this.action !== 'edit') {
             this.action = 'edit'
             this.userToEdit = user
             this.view = 'form'
@@ -74,13 +87,16 @@
         },
 
         showCreateForm () {
-          this.action = 'create'
-          this.view = 'form'
+          if (this.action !== 'create') {
+            this.action = 'create'
+            this.view = 'form'
+          }
         },
 
         closeForm () {
           this.view = 'table'
           this.userToEdit = null
+          this.action = null
         },
 
         saveUserData (userToSave) {

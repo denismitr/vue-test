@@ -1,9 +1,9 @@
 <template>
     <div class="nav-left">
-        <a class="nav-item is-brand" href="#">
+        <router-link class="nav-item is-brand" to="/">
           <img src="./../assets/logo.png" alt="Logo">
           &nbsp;&nbsp;<span>Vue.js Test App</span>
-        </a>
+        </router-link>
     </div>
 </template>
 

@@ -1,7 +1,11 @@
 <template>
-  <div class="hello">
+  <section class="section">
     <h1>{{ msg }}</h1>
-  </div>
+
+    <div class="sub-menu">
+      <router-link to="/users">Список пользователей</router-link>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -34,5 +38,10 @@ li {
 
 a {
   color: #42b983;
+  font-size: 1.5rem;
+}
+
+.sub-menu {
+  text-align: center;
 }
 </style>

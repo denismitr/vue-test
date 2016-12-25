@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <section class="section">
         <h1>О программе</h1>
-    </div>
+    </section>
 </template>
 
 <script>
